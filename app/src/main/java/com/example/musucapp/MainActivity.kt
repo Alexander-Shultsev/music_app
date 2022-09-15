@@ -1,5 +1,6 @@
 package com.example.musucapp
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
@@ -13,12 +14,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.musucapp.ui.navigation.NavHostMain
 import com.example.musucapp.ui.screen.sign_in.SignInScreen
 import com.example.musucapp.ui.theme.MusucAppTheme
 
 lateinit var context: Context
 lateinit var activity: Activity
 lateinit var lifecycleOwner: LifecycleOwner
+
+@SuppressLint("StaticFieldLeak")
+lateinit var navController: NavHostController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,20 +36,9 @@ class MainActivity : ComponentActivity() {
         lifecycleOwner = this
 
         setContent {
-            SignInScreen()
+            navController = rememberNavController()
+
+            NavHostMain()
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MusucAppTheme {
-        Greeting("Android")
     }
 }

@@ -1,21 +1,18 @@
-package com.example.musucapp.ui.screen.sign_in
+package com.example.musucapp.ui.screen.my_songs
 
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.*
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.musucapp.lifecycleOwner
 import com.example.musucapp.model.Post
 import com.example.musucapp.model.service
 import com.example.musucapp.navController
 import com.example.musucapp.ui.navigation.NavItems
 import com.example.musucapp.ui.navigation.NavMenuItems
-import com.example.musucapp.ui.navigation.navigateTo
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
-class SignInViewModel: ViewModel() {
+class MySongsViewModel: ViewModel() {
 
     private val _loginTextField: MutableLiveData<String> = MutableLiveData("")
     private val _passwordTextField: MutableLiveData<String> = MutableLiveData("")
@@ -48,7 +45,7 @@ class SignInViewModel: ViewModel() {
                 run {
                     data.forEach { item ->
                         if (item.userId.toString() == login && item.id.toString() == password) {
-                            navigateTo(NavMenuItems.MySongs.route)
+//                            navController.navigate(NavMenuItems.MySongs.route)
                             _error.postValue("success")
                             isLogin = true
                             return@observe
