@@ -16,6 +16,8 @@ import com.example.musucapp.ui.base.H1
 import com.example.musucapp.ui.base.H3
 import com.example.musucapp.ui.base.TextFieldMain
 import com.example.musucapp.ui.component.SimpleAlertDialog
+import com.example.musucapp.ui.navigation.NavItems
+import com.example.musucapp.ui.navigation.navigateTo
 import com.example.musucapp.ui.theme.MusucAppTheme
 import com.example.musucapp.ui.theme.mainBackground
 
@@ -61,7 +63,7 @@ fun SignInScreen(viewModel: SignInViewModel = viewModel()) {
                     title = "I don't have account yet",
                     modifier = Modifier
                         .padding(top = 80.dp)
-                        .clickable { }
+                        .clickable { navigateTo(NavItems.SignUp.route) }
                 )
             }
         }

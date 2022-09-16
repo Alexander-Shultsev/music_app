@@ -8,7 +8,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.musucapp.lifecycleOwner
 import com.example.musucapp.model.Post
 import com.example.musucapp.model.service
-import com.example.musucapp.navController
 import com.example.musucapp.ui.navigation.NavItems
 import com.example.musucapp.ui.navigation.NavMenuItems
 import com.example.musucapp.ui.navigation.navigateTo
@@ -39,7 +38,6 @@ class SignInViewModel: ViewModel() {
     fun signIn() {
         val login = loginTextField.value
         val password = passwordTextField.value
-        Log.i(TAG, "signIn: $login, $password")
 
         if (login != "" && password != "") {
             getPosts()
@@ -57,7 +55,6 @@ class SignInViewModel: ViewModel() {
                     if (!isLogin) {
                         _error.postValue("No such user")
                         isLogin = false
-                        Log.i(TAG, "signIn: fail")
                     }
                 }
             }

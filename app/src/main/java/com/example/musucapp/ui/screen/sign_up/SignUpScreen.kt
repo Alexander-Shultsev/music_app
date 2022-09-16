@@ -4,8 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -13,6 +15,9 @@ import com.example.musucapp.ui.base.ButtonMain
 import com.example.musucapp.ui.base.H1
 import com.example.musucapp.ui.base.H3
 import com.example.musucapp.ui.base.TextFieldMain
+import com.example.musucapp.ui.component.SimpleAlertDialog
+import com.example.musucapp.ui.navigation.NavItems
+import com.example.musucapp.ui.navigation.navigateTo
 import com.example.musucapp.ui.screen.sign_in.SignUpViewModel
 import com.example.musucapp.ui.theme.MusucAppTheme
 import com.example.musucapp.ui.theme.mainBackground
@@ -20,6 +25,8 @@ import com.example.musucapp.ui.theme.white80
 
 @Composable
 fun SignUpScreen(viewModel: SignUpViewModel = viewModel()) {
+    val error = viewModel.error.observeAsState()
+
     MusucAppTheme {
         Box(
             modifier = Modifier
@@ -47,16 +54,18 @@ fun SignUpScreen(viewModel: SignUpViewModel = viewModel()) {
                 )
                 TextFieldMain(
                     label = "Password",
-                    onTextChange = { viewModel.changePasswordTextField(it) }
+                    onTextChange = { viewModel.changePasswordTextField(it) },
+                    keyboardType = KeyboardType.Number
                 )
                 TextFieldMain(
                     label = "Repeat password",
-                    onTextChange = { viewModel.changeRepeatPasswordTextField(it) }
+                    onTextChange = { viewModel.changeRepeatPasswordTextField(it) },
+                    keyboardType = KeyboardType.Number
                 )
                 // кнопка
                 ButtonMain(
-                    text = "Login",
-                    onClick = {  },
+                    text = "Register",
+                    onClick = { viewModel.signUp() },
                     modifier = Modifier.padding(top = 40.dp)
                 )
 
@@ -64,16 +73,38 @@ fun SignUpScreen(viewModel: SignUpViewModel = viewModel()) {
                     title = "I already have account",
                     modifier = Modifier
                         .padding(top = 80.dp)
-                        .clickable {  },
+                        .clickable { navigateTo(NavItems.SignIn.route) },
                     color = white80
                 )
             }
         }
-    }
-}
 
-@Preview
-@Composable
-fun SignUpScreenPreview() {
-    SignUpScreen()
+        when(error.value) {
+            "No such user" ->
+                SimpleAlertDialog(
+                    title = "OH",
+                    subtitle = "Incorrect login or password",
+                    closeDialog = { viewModel.setNullError() }
+                )
+            "Empty field" ->
+                SimpleAlertDialog(
+                    title = "OH",
+                    subtitle = "Write all field",
+                    closeDialog = { viewModel.setNullError() }
+                )
+            "success" ->
+                SimpleAlertDialog(
+                    title = "YES",
+                    subtitle = "Success",
+                    closeDialog = { viewModel.setNullError() }
+                )
+            "Repeat password" ->
+                SimpleAlertDialog(
+                    title = "OH",
+                    subtitle = "Password and repeat password don't match",
+                    closeDialog = { viewModel.setNullError() }
+                )
+            else -> {}
+        }
+    }
 }

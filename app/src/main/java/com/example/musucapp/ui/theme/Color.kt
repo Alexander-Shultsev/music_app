@@ -12,6 +12,9 @@ val Purple200 = Color(0xFF1B1436)
 val Orange200 = Color(0xFF9F494C)
 
 val white80 = Color(0xCCFFFFFF)
+val white0 = Color(0xFFFFFF)
+val white15 = Color(0x26FFFFFF)
+val white50 = Color(0x26FFFFFF)
 
 val mainBackground = Brush.linearGradient(
     colors = listOf(

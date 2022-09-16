@@ -24,9 +24,6 @@ lateinit var context: Context
 lateinit var activity: Activity
 lateinit var lifecycleOwner: LifecycleOwner
 
-@SuppressLint("StaticFieldLeak")
-lateinit var navController: NavHostController
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +33,6 @@ class MainActivity : ComponentActivity() {
         lifecycleOwner = this
 
         setContent {
-            navController = rememberNavController()
-
             NavHostMain()
         }
     }

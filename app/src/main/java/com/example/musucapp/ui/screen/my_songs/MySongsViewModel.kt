@@ -6,7 +6,6 @@ import androidx.lifecycle.*
 import com.example.musucapp.lifecycleOwner
 import com.example.musucapp.model.Post
 import com.example.musucapp.model.service
-import com.example.musucapp.navController
 import com.example.musucapp.ui.navigation.NavItems
 import com.example.musucapp.ui.navigation.NavMenuItems
 import kotlinx.coroutines.launch
