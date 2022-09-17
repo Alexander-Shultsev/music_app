@@ -6,6 +6,13 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 
+data class Photo (
+    val albumId: Int,
+    val id: Int,
+    val title: String,
+    val url: String,
+)
+
 data class Post (
     val userId: Int,
     val id: Int,

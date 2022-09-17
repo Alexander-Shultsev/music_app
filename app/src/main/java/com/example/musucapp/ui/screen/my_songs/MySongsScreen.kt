@@ -4,6 +4,7 @@ import android.widget.Toolbar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -22,14 +24,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.musucapp.R
+import com.example.musucapp.model.Photo
 import com.example.musucapp.ui.base.*
 import com.example.musucapp.ui.component.SimpleAlertDialog
 import com.example.musucapp.ui.navigation.NavMenuItems
+import com.example.musucapp.ui.screen.update_song.UpdateSongAlertDialog
 import com.example.musucapp.ui.theme.*
 
 @Composable
 fun MySongsScreen(viewModel: MySongsViewModel = viewModel()) {
     val error = viewModel.error.observeAsState("")
+    val photos = viewModel.photos.observeAsState(arrayListOf(Photo(0,0,"","")))
+    val isOpenUpdateSong = viewModel.isOpenUpdateSong.observeAsState(false)
+    val isOpenAddSong = viewModel.isOpenAddSong.observeAsState(false)
 
     MusucAppTheme {
         Scaffold(
@@ -97,14 +104,18 @@ fun MySongsScreen(viewModel: MySongsViewModel = viewModel()) {
                 }
 
                 // Список
-
                 item {
                     for (item in 1..20) {
                         Box(
                             modifier = Modifier
                                 .clip(shape = RoundedCornerShape(20.dp))
                                 .background(white15)
-                                .clickable { }
+                                .pointerInput(Unit) {
+                                    detectTapGestures (
+                                        onDoubleTap = { viewModel.changeVisibleUpdateSongAlertDialog() },
+                                        onLongPress = { viewModel.changeVisibleAddSongAlertDialog() }
+                                    )
+                                }
                         ) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
@@ -141,6 +152,17 @@ fun MySongsScreen(viewModel: MySongsViewModel = viewModel()) {
         }
     }
 }
+
+    if (isOpenAddSong.value) {
+
+    }
+
+    if (isOpenUpdateSong.value) {
+        UpdateSongAlertDialog(
+            photo = Photo(1, 1, "Love", "Klava Koka"),
+            closeDialog = { viewModel.changeVisibleUpdateSongAlertDialog() }
+        )
+    }
 
     when (error.value) {
         "No such user" ->

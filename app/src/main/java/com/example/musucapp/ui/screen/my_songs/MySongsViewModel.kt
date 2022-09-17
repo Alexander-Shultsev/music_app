@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.musucapp.lifecycleOwner
+import com.example.musucapp.model.Photo
 import com.example.musucapp.model.Post
 import com.example.musucapp.model.service
 import com.example.musucapp.ui.navigation.NavItems
@@ -16,13 +17,27 @@ class MySongsViewModel: ViewModel() {
     private val _loginTextField: MutableLiveData<String> = MutableLiveData("")
     private val _passwordTextField: MutableLiveData<String> = MutableLiveData("")
     private val _posts: MutableLiveData<ArrayList<Post>> = MutableLiveData(arrayListOf())
+    private val _photos: MutableLiveData<ArrayList<Photo>> = MutableLiveData(arrayListOf())
     private val _error: MutableLiveData<String> = MutableLiveData("")
+    private val _isOpenAddSong: MutableLiveData<Boolean> = MutableLiveData(false)
+    private val _isOpenUpdateSong: MutableLiveData<Boolean> = MutableLiveData(false)
     private var isLogin: Boolean = false
 
     val loginTextField: LiveData<String> = _loginTextField
     val passwordTextField: LiveData<String> = _passwordTextField
     val posts: LiveData<ArrayList<Post>> = _posts
+    val photos: LiveData<ArrayList<Photo>> = _photos
     val error: LiveData<String> = _error
+    val isOpenAddSong: LiveData<Boolean> = _isOpenAddSong
+    val isOpenUpdateSong: LiveData<Boolean> = _isOpenUpdateSong
+
+    fun changeVisibleUpdateSongAlertDialog() {
+        _isOpenUpdateSong.postValue(!isOpenUpdateSong.value!!)
+    }
+
+    fun changeVisibleAddSongAlertDialog() {
+        _isOpenAddSong.postValue(!isOpenAddSong.value!!)
+    }
 
     fun changeLoginTextField(text: String) {
         _loginTextField.postValue(text)

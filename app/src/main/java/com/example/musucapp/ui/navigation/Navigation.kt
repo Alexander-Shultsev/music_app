@@ -69,7 +69,7 @@ fun NavHostMain() {
 
     NavHost(
         navController = navHostController,
-        startDestination = NavItems.SignIn.route
+        startDestination = NavMenuItems.MySongs.route
     ) {
         composable(NavItems.SignIn.route) {
             SignInScreen()

@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.musucapp.ui.screen.sign_in.SignInScreen
+import com.example.musucapp.ui.theme.Purple200
 import com.example.musucapp.ui.theme.Shapes
 import com.example.musucapp.ui.theme.white80
 
@@ -47,6 +48,36 @@ fun TextFieldMain(
             unfocusedLabelColor = white80,
             focusedLabelColor = Color.White,
             cursorColor = Color.White
+        ),
+        label = { Text(label) },
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType)
+    )
+}
+
+@Composable
+fun TextFieldDark(
+    label: String,
+    onTextChange: (text: String) -> Unit,
+    keyboardType: KeyboardType = KeyboardType.Text
+) {
+    val text = rememberSaveable { mutableStateOf("") }
+
+    OutlinedTextField(
+        value = text.value,
+        onValueChange = {
+            text.value = it
+            onTextChange(text.value)
+        },
+        shape = Shapes.large,
+        modifier = Modifier
+            .fillMaxWidth(),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            unfocusedBorderColor = Purple200,
+            focusedBorderColor = Purple200,
+            textColor = Purple200,
+            unfocusedLabelColor = Purple200,
+            focusedLabelColor = Purple200,
+            cursorColor = Purple200
         ),
         label = { Text(label) },
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType)
