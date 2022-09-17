@@ -16,16 +16,18 @@ import com.example.musucapp.ui.base.H1
 import com.example.musucapp.ui.base.H3
 import com.example.musucapp.ui.base.TextFieldMain
 import com.example.musucapp.ui.component.SimpleAlertDialog
+import com.example.musucapp.ui.component.alert_dialog.AlertDialogController
 import com.example.musucapp.ui.navigation.NavItems
 import com.example.musucapp.ui.navigation.navigateTo
 import com.example.musucapp.ui.screen.sign_in.SignUpViewModel
+import com.example.musucapp.ui.screen.sign_in.alertDialogViewModel
 import com.example.musucapp.ui.theme.MusucAppTheme
 import com.example.musucapp.ui.theme.mainBackground
 import com.example.musucapp.ui.theme.white80
 
 @Composable
 fun SignUpScreen(viewModel: SignUpViewModel = viewModel()) {
-    val error = viewModel.error.observeAsState()
+    val message = alertDialogViewModel.message.observeAsState()
 
     MusucAppTheme {
         Box(
@@ -37,7 +39,7 @@ fun SignUpScreen(viewModel: SignUpViewModel = viewModel()) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal  = 20.dp),
+                    .padding(horizontal = 20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 // Иконка
@@ -78,33 +80,8 @@ fun SignUpScreen(viewModel: SignUpViewModel = viewModel()) {
                 )
             }
         }
-
-        when(error.value) {
-            "No such user" ->
-                SimpleAlertDialog(
-                    title = "OH",
-                    subtitle = "Incorrect login or password",
-                    closeDialog = { viewModel.setNullError() }
-                )
-            "Empty field" ->
-                SimpleAlertDialog(
-                    title = "OH",
-                    subtitle = "Write all field",
-                    closeDialog = { viewModel.setNullError() }
-                )
-            "success" ->
-                SimpleAlertDialog(
-                    title = "YES",
-                    subtitle = "Success",
-                    closeDialog = { viewModel.setNullError() }
-                )
-            "Repeat password" ->
-                SimpleAlertDialog(
-                    title = "OH",
-                    subtitle = "Password and repeat password don't match",
-                    closeDialog = { viewModel.setNullError() }
-                )
-            else -> {}
+        if (message.value != "") {
+            AlertDialogController()
         }
     }
 }

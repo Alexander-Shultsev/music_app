@@ -40,12 +40,14 @@ fun ButtonMain(
 fun ButtonLittle(
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    color: Color = Color.White,
+    background: Color = Color.Black,
 ) {
     Button(
         colors = ButtonDefaults.buttonColors(
-            contentColor = Color.White,
-            backgroundColor = Orange200
+            contentColor = color,
+            backgroundColor = background
         ),
         onClick = { onClick() }
     ) {

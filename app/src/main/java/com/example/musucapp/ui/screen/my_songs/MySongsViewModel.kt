@@ -3,33 +3,37 @@ package com.example.musucapp.ui.screen.my_songs
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.*
-import com.example.musucapp.lifecycleOwner
-import com.example.musucapp.model.Photo
-import com.example.musucapp.model.Post
+import com.example.musucapp.model.Song
 import com.example.musucapp.model.service
-import com.example.musucapp.ui.navigation.NavItems
-import com.example.musucapp.ui.navigation.NavMenuItems
+import com.example.musucapp.ui.screen.sign_in.alertDialogViewModel
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class MySongsViewModel: ViewModel() {
 
-    private val _loginTextField: MutableLiveData<String> = MutableLiveData("")
-    private val _passwordTextField: MutableLiveData<String> = MutableLiveData("")
-    private val _posts: MutableLiveData<ArrayList<Post>> = MutableLiveData(arrayListOf())
-    private val _photos: MutableLiveData<ArrayList<Photo>> = MutableLiveData(arrayListOf())
-    private val _error: MutableLiveData<String> = MutableLiveData("")
+    private val _photos: MutableLiveData<ArrayList<Song>> = MutableLiveData()
     private val _isOpenAddSong: MutableLiveData<Boolean> = MutableLiveData(false)
     private val _isOpenUpdateSong: MutableLiveData<Boolean> = MutableLiveData(false)
-    private var isLogin: Boolean = false
+    private val _isOpenEditSong: MutableLiveData<Boolean> = MutableLiveData(false)
+    private val _selectedTabNumber: MutableLiveData<Int> = MutableLiveData()
+    private val _currentMusic: MutableLiveData<Int> = MutableLiveData()
 
-    val loginTextField: LiveData<String> = _loginTextField
-    val passwordTextField: LiveData<String> = _passwordTextField
-    val posts: LiveData<ArrayList<Post>> = _posts
-    val photos: LiveData<ArrayList<Photo>> = _photos
-    val error: LiveData<String> = _error
+    var nameTabs = arrayListOf("My", "Collab")
+
+    val songs: LiveData<ArrayList<Song>> = _photos
     val isOpenAddSong: LiveData<Boolean> = _isOpenAddSong
     val isOpenUpdateSong: LiveData<Boolean> = _isOpenUpdateSong
+    val isOpenEditSong: LiveData<Boolean> = _isOpenEditSong
+    val selectedTabNumber: LiveData<Int> = _selectedTabNumber
+    val currentSong: LiveData<Int> = _currentMusic
+
+    init {
+        getPhotos()
+    }
+
+    fun changeVisibleEditSongAlertDialog() {
+        _isOpenEditSong.postValue(!isOpenEditSong.value!!)
+    }
 
     fun changeVisibleUpdateSongAlertDialog() {
         _isOpenUpdateSong.postValue(!isOpenUpdateSong.value!!)
@@ -39,55 +43,29 @@ class MySongsViewModel: ViewModel() {
         _isOpenAddSong.postValue(!isOpenAddSong.value!!)
     }
 
-    fun changeLoginTextField(text: String) {
-        _loginTextField.postValue(text)
-    }
-
-    fun changePasswordTextField(text: String) {
-        _passwordTextField.postValue(text)
-    }
-
-    fun signIn() {
-        val login = loginTextField.value
-        val password = passwordTextField.value
-        Log.i(TAG, "signIn: $login, $password")
-
-        if (login != "" && password != "") {
-            getPosts()
-
-            _posts.observe(lifecycleOwner) { data ->
-                run {
-                    data.forEach { item ->
-                        if (item.userId.toString() == login && item.id.toString() == password) {
-//                            navController.navigate(NavMenuItems.MySongs.route)
-                            _error.postValue("success")
-                            isLogin = true
-                            return@observe
-                        }
-                    }
-                    if (!isLogin) {
-                        _error.postValue("No such user")
-                        isLogin = false
-                        Log.i(TAG, "signIn: fail")
-                    }
-                }
-            }
-        } else {
-            _error.postValue("Empty field")
-        }
-    }
-
-    private fun getPosts() {
+    private fun getPhotos() {
         viewModelScope.launch {
             try {
-                _posts.value = service.getAllPost().body()
+                _photos.postValue(service.getAllPhoto().body())
             } catch (e: Exception) {
-                Log.e(TAG, "error: $e")
+                Log.e(TAG, "getPhotos: $e")
             }
         }
     }
 
-    fun setNullError() {
-        _error.postValue("")
+    fun setTabSelected(value: Int) {
+        _selectedTabNumber.postValue(value)
+    }
+
+    fun setCurrentMusic(value: Int) {
+        _currentMusic.postValue(value)
+    }
+
+    fun showDialog(dialogID: String) {
+        alertDialogViewModel.showDialog(dialogID)
+    }
+
+    fun deleteSong(currentSong: Int) {
+        TODO("Not yet implemented")
     }
 }

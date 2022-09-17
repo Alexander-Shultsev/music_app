@@ -1,14 +1,17 @@
-package com.example.musucapp.ui.screen.update_song
+package com.example.musucapp.ui.screen.sign_in
 
-import android.graphics.Bitmap
-import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.musucapp.context
-import java.io.StringReader
+import androidx.lifecycle.viewModelScope
+import com.example.musucapp.lifecycleOwner
+import com.example.musucapp.model.Post
+import com.example.musucapp.model.service
+import com.example.musucapp.ui.navigation.NavItems
+import com.example.musucapp.ui.navigation.navigateTo
+import kotlinx.coroutines.launch
 
 class UpdateSongViewModel: ViewModel() {
 
@@ -31,5 +34,4 @@ class UpdateSongViewModel: ViewModel() {
     fun updateData() {
 
     }
-
 }

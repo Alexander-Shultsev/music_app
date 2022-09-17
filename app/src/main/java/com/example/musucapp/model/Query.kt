@@ -6,18 +6,18 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 
-data class Photo (
-    val albumId: Int,
-    val id: Int,
-    val title: String,
-    val url: String,
-)
-
 data class Post (
     val userId: Int,
     val id: Int,
     val title: String,
     val body: String,
+)
+
+data class Song (
+    val albumId: Int,
+    val id: Int,
+    val title: String,
+    val url: String,
 )
 
 interface Query {
@@ -33,5 +33,8 @@ interface Query {
         @Field("title") title: String,
         @Field("body") body: String,
     ) : Response<Post>
+
+    @GET("photos")
+    suspend fun getAllPhoto() : Response<ArrayList<Song>>
 
 }

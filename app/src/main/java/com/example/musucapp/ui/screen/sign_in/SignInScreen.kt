@@ -1,5 +1,7 @@
 package com.example.musucapp.ui.screen.sign_in
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,15 +17,19 @@ import com.example.musucapp.ui.base.ButtonMain
 import com.example.musucapp.ui.base.H1
 import com.example.musucapp.ui.base.H3
 import com.example.musucapp.ui.base.TextFieldMain
+import com.example.musucapp.ui.component.AlertDialogViewModel
 import com.example.musucapp.ui.component.SimpleAlertDialog
+import com.example.musucapp.ui.component.alert_dialog.AlertDialogController
 import com.example.musucapp.ui.navigation.NavItems
 import com.example.musucapp.ui.navigation.navigateTo
 import com.example.musucapp.ui.theme.MusucAppTheme
 import com.example.musucapp.ui.theme.mainBackground
 
+var alertDialogViewModel: AlertDialogViewModel = AlertDialogViewModel()
+
 @Composable
 fun SignInScreen(viewModel: SignInViewModel = viewModel()) {
-    val error = viewModel.error.observeAsState("")
+    val message = alertDialogViewModel.message.observeAsState()
 
     MusucAppTheme {
         Box(
@@ -67,27 +73,8 @@ fun SignInScreen(viewModel: SignInViewModel = viewModel()) {
                 )
             }
         }
-
-        when(error.value) {
-            "No such user" ->
-                SimpleAlertDialog(
-                    title = "OH",
-                    subtitle = "Incorrect login or password",
-                    closeDialog = { viewModel.setNullError() }
-                )
-            "Empty field" ->
-                SimpleAlertDialog(
-                    title = "OH",
-                    subtitle = "Write all field",
-                    closeDialog = { viewModel.setNullError() }
-                )
-            "success" ->
-                SimpleAlertDialog(
-                    title = "YES",
-                    subtitle = "Success",
-                    closeDialog = { viewModel.setNullError() }
-                )
-            else -> {}
+        if (message.value != "") {
+            AlertDialogController()
         }
     }
 }
